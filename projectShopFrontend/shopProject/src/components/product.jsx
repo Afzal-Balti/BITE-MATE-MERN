@@ -3,7 +3,6 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
 
 function Product() {
   const {
@@ -17,8 +16,6 @@ function Product() {
   });
 
   const navigate = useNavigate();
-  const id = useParams();
-  console.log("id is --------------- ", id.id);
 
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -66,7 +63,7 @@ function Product() {
         }
       );
 
-      console.log("Product Created:", response);
+      console.log("Product Created:", response.data);
       messageApi.success("Product created successfully ✅");
       setTimeout(() => {
         navigate(`/shop/${response.data.product._id}`);

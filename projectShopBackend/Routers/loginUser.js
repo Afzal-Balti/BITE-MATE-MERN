@@ -2,12 +2,13 @@ const express = require("express");
 const loginUser = express.Router();
 const createRegister = require("../models/register-model");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 loginUser.get("/", (req, res) => {
   res.send("the Register User is --------");
 });
 
-loginUser.post("/login", async (req, res) => {
+loginUser.post("/", async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -24,6 +25,10 @@ loginUser.post("/login", async (req, res) => {
     }
 
     res.status(200).json({ message: "Successfully logged in!", loginuser });
+
+    let token = jwt.sign({ email: loginuser.email }, "secert keyy");
+    res.cookie("token", token);
+    console.log("THE LOGIN ----", token);
   } catch (err) {
     console.log(err.message);
     res.status(500).json({ error: err.message });

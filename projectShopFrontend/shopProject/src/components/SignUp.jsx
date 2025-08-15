@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { message } from "antd";
-import "antd/dist/reset.css"; 
+import "antd/dist/reset.css";
 
 function SignUp() {
   const {

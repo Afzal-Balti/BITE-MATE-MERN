@@ -46,8 +46,9 @@ productRouter.post("/", upload.single("image"), async (req, res) => {
     const savedProduct = await product.save();
 
     res.status(201).json({
-      message: "Product is successfully created",
       product: savedProduct,
+      message: "Product is successfully created",
+      status: 200,
     });
   } catch (err) {
     console.error("Error:", err);
@@ -64,9 +65,20 @@ productRouter.get("/:id", async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    res.json(product);
+    res.json({
+      product,
+    });
   } catch (err) {
     console.error("Error fetching product:", err.message);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+productRouter.get("/", async (req, res) => {
+  try {
+    const products = await Product.find();
+    res.json(products);
+  } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
