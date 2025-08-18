@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { message } from "antd";
 import "antd/dist/reset.css";
+import fontImage from "../assets/Images/frontImg.jpg";
 
 function Login() {
   const {
@@ -33,8 +34,8 @@ function Login() {
       }, 1000);
 
       reset();
-    } catch (err) {
-      messageshow("Error: " + (err.response?.data?.error || err.message));
+    } catch {
+      messageshow.warning("Email and password is incorrect! Try again");
     }
   };
 
@@ -146,7 +147,7 @@ function Login() {
 
         <div className="w-full md:w-1/2 bg-gray-200 relative">
           <img
-            src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=700&q=80"
+            src={fontImage}
             alt="Team working"
             className="w-full h-full object-cover"
           />

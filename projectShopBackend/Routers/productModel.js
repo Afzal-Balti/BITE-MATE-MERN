@@ -2,6 +2,8 @@ const express = require("express");
 const multer = require("multer");
 const fs = require("fs");
 const Product = require("../models/product-model");
+const isLoggedIn = require("../Middleware/isLoggedIn");
+const jwt = require("jsonwebtoken");
 
 const productRouter = express.Router();
 

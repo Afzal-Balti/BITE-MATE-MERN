@@ -5,18 +5,18 @@ function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 shadow-lg">
+    <nav className="bg-gradient-to-r from-pink-500  via-purple-500 to-blue-500 shadow-lg">
       <div className="mx-5  px-4 sm:px-6 ">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-16 ">
           <div className="text-white font-bold text-2xl tracking-wide">
             MyShop
           </div>
 
-          <div className="hidden md:flex space-x-6 text-white font-medium">
-            <a href="/shop" className="hover:text-yellow-300 transition">
+          <div className="hidden md:flex space-x-6 text-white font-medium ">
+            <a href="/home" className="hover:text-yellow-300 transition">
               Home
             </a>
-            <a href="/shop" className="hover:text-yellow-300 transition">
+            <a href="/home" className="hover:text-yellow-300 transition">
               Shop
             </a>
             <a href="/product" className="hover:text-yellow-300 transition">

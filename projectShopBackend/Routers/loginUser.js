@@ -20,15 +20,21 @@ loginUser.post("/", async (req, res) => {
 
     const matchPassword = await bcrypt.compare(password, loginuser.password);
 
+    if (matchPassword) {
+      const token = jwt.sign({ email: loginuser.email }, process.env.JWT_KEY);
+
+      res.cookie("token", token, {
+        httpOnly: false,
+        secure: false,
+        sameSite: "lax",
+      });
+    }
+
     if (!matchPassword) {
       return res.status(400).json({ error: "Invalid email or password" });
     }
 
     res.status(200).json({ message: "Successfully logged in!", loginuser });
-
-    let token = jwt.sign({ email: loginuser.email }, "secert keyy");
-    res.cookie("token", token);
-    console.log("THE LOGIN ----", token);
   } catch (err) {
     console.log(err.message);
     res.status(500).json({ error: err.message });

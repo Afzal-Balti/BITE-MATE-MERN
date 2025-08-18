@@ -1,38 +1,33 @@
 const express = require("express");
-const registerUser = express.Router();
-const createRegister = require("../models/register-model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const createRegister = require("../models/register-model");
 
-registerUser.get("/", (req, res) => {
-  res.send("the Register User is --------");
-});
+const registerUser = express.Router();
 
 registerUser.post("/", async (req, res) => {
   try {
     const { fullname, email, password } = req.body;
 
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await createRegister.create({
       fullname,
       email,
       password: hashedPassword,
     });
-    console.log("user is ------- ", user);
 
-    let token = jwt.sign({ email }, "secert keyy");
+    const token = jwt.sign({ email }, process.env.JWT_KEY);
+
     res.cookie("token", token, {
-      httpOnly: true,
-      sameSite: "lax", // use "none" if cross-origin and HTTPS
+      httpOnly: false,
       secure: false,
+      sameSite: "lax",
     });
-    console.log("THE COOKIE REGISTER IS ===", token);
 
     res.status(200).json(user);
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
     res.status(500).json({ error: err.message });
   }
 });

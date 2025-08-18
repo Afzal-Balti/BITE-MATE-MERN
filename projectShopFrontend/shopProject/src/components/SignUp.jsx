@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { message } from "antd";
+import frontImage from "../assets/Images/frontImg.jpg";
 import "antd/dist/reset.css";
 
 function SignUp() {
@@ -20,15 +21,17 @@ function SignUp() {
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post("http://localhost:3000/create", {
-        fullname: data.fullname,
-        email: data.email,
-        password: data.password,
-      });
+      const response = await axios.post(
+        "http://localhost:3000/create",
+        {
+          fullname: data.fullname,
+          email: data.email,
+          password: data.password,
+        },
+        { withCredentials: true }
+      );
 
       messageApi.success("User created successfully ✅");
-
-      // alert("user created successfully");
       console.log("The signUP user data is --- ", response.data);
 
       setTimeout(() => {
@@ -36,8 +39,8 @@ function SignUp() {
       }, 1000);
 
       reset();
-    } catch (err) {
-      messageApi("Error: " + (err.response?.data?.error || err.message));
+    } catch {
+      messageApi.warning("Not user Creted! Try Again");
     }
   };
 
@@ -169,7 +172,7 @@ function SignUp() {
 
         <div className="w-full  bg-gray-200 relative">
           <img
-            src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=700&q=80"
+            src={frontImage}
             alt="Team working"
             className="w-full h-full object-cover"
           />
