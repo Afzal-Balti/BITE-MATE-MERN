@@ -1,11 +1,14 @@
 import axios from "axios";
-import React from "react";
+import React, { useContext } from "react";
 import { useEffect } from "react";
 import { message } from "antd";
 import { useNavigate } from "react-router-dom";
+import { UserData } from "./UserContext";
 
 const Logout = () => {
   const [messageApi, contextHolder] = message.useMessage();
+
+  const { setUsername } = useContext(UserData);
 
   const navigate = useNavigate();
 
@@ -23,6 +26,7 @@ const Logout = () => {
         });
 
         console.log(data);
+        setUsername("");
 
         messageApi.success("Logged Out Successfull");
       } catch {

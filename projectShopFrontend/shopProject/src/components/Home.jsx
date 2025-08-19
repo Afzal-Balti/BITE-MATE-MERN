@@ -5,8 +5,6 @@ import axios from "axios";
 function Home() {
   const [products, setProducts] = useState(null);
 
-  console.log("PRODUCT IS -__________", products);
-
   useEffect(() => {
     const listedProduct = async () => {
       try {
@@ -26,28 +24,26 @@ function Home() {
       <div className="w-full">
         <img src={BackgroundImg} className="object-contain w-full h-full"></img>
       </div>
-      <div className="w-full overflow-hidden bg-gray-500 mt-5">
+      <div className="w-full relative overflow-hidden bg-gray-500 mt-5">
         <div className="flex animate-marquee whitespace-nowrap  text-2xl font-bold">
           <h1 className="py-10 px-10 text-yellow-400">OUR SHOP PRODUCTS</h1>
           <h1 className="py-10 px-10 text-white">SALE & PURCHASE</h1>
           <h1 className="py-10 px-10 text-yellow-400">LET'S GO </h1>
           <h1 className="py-10 px-10 text-white">ENJOY YOUR LIFE</h1>
           <h1 className="py-10 px-10 text-yellow-400">KEEP SIMILE</h1>
-          <h1 className="py-10 px-10 text-white">
-            BEST QUALITY STRONG BONDING
-          </h1>
+          <h1 className="py-10 px-10 text-white"></h1>
           <h1 className="py-10 px-10 text-yellow-400">OUR TRUST IS CUSTOMER</h1>
           <h1 className="py-10 px-10 text-white">WELCOME TO OUR BRAND</h1>
         </div>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6  p-6 mt-0 mt-5">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6  p-6  mt-5">
         {products?.map((item, index) => (
           <div
             key={index}
             className="bg-white rounded-lg shadow hover:shadow-lg transition duration-300 overflow-hidden cursor-pointer"
           >
-            <div className="relative">
+            <div className="">
               <img
                 src={item.image}
                 alt={item.name}

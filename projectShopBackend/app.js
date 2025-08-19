@@ -40,6 +40,10 @@ app.use("/login", loginUser);
 app.use("/products", productRouter);
 app.use("/logout", logoutUser);
 
+app.get("/", (req, res) => {
+  res.send("HELLO SERVER ---");
+});
+
 app.listen(3000, () => {
   console.log("Server running on port 3000");
 });

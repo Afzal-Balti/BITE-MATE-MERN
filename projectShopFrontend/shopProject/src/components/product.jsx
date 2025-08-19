@@ -80,7 +80,7 @@ function Product() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-10">
       {contextHolder}
-      <h1 className="text-3xl font-bold text-center mb-8 text-pink-600">
+      <h1 className="text-3xl font-bold text-center mt-10 text-pink-600">
         Create Product
       </h1>
 

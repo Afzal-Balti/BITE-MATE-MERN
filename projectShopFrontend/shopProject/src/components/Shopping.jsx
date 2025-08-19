@@ -4,7 +4,7 @@ import { FaStar } from "react-icons/fa";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
-function Shop() {
+function Shopping() {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
 
@@ -18,17 +18,17 @@ function Shop() {
 
   return (
     <div className="w-full px-4 py-10 ">
-      <h1 className="text-3xl font-bold text-center mb-8 text-pink-600 mt-10">
+      <h1 className="text-3xl font-bold text-center mt-10 text-pink-600">
         Our Shop
       </h1>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 ">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 mt-10">
         {product?.map((item, index) => (
           <div
             key={index}
             className="bg-white rounded-lg shadow hover:shadow-lg transition duration-300 overflow-hidden cursor-pointer"
           >
-            <div className="w-full ">
+            <div className=" ">
               {item.sale && (
                 <span className=" top-2 left-2 bg-red-500 text-white px-2 py-1 text-xs rounded">
                   Sale!
@@ -83,4 +83,4 @@ function Shop() {
   );
 }
 
-export default Shop;
+export default Shopping;

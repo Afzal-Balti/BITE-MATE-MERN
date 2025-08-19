@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { message } from "antd";
 import frontImage from "../assets/Images/frontImg.jpg";
 import "antd/dist/reset.css";
+import Navbar from "./Navbar";
+import { UserData } from "./UserContext";
+// import { useContext } from "react";
+// import { AuthProvider } from "./UserContext";
 
 function SignUp() {
   const {
@@ -19,6 +23,8 @@ function SignUp() {
 
   const [messageApi, contextHolder] = message.useMessage();
 
+  const { setUsername } = useContext(UserData);
+
   const onSubmit = async (data) => {
     try {
       const response = await axios.post(
@@ -32,7 +38,8 @@ function SignUp() {
       );
 
       messageApi.success("User created successfully ✅");
-      console.log("The signUP user data is --- ", response.data);
+      setUsername(response.data.fullname);
+      console.log("The signUP user data is --- ", response.data.fullname);
 
       setTimeout(() => {
         navigate("/login");
