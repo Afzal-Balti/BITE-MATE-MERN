@@ -9,18 +9,25 @@ import { Heart } from "lucide-react";
 import ProfilePic from "../assets/Images/profile.png";
 import { UserData } from "./UserContext";
 import PaginationPage from "./pagination";
+import HeartIcons from "../assets/Images/heartIcon.png";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
   const [products, setProducts] = useState(null);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const limit = 10;
+  const [toogle, setToogle] = useState({});
+
+  const navigate = useNavigate();
+
+  console.log("TOOGLE IS --------- ", toogle);
 
   const { username } = useContext(UserData);
 
   console.log("name is :::::", username);
 
-  console.log("PAGE IS -----------", page);
+  // console.log("PAGE IS -----------", page);
   useEffect(() => {
     const listedProduct = async () => {
       try {
@@ -40,10 +47,10 @@ function Home() {
     listedProduct();
   }, [page]);
 
-  console.log("the product data is shows -- ", products);
+  // console.log("the product data is shows -- ", products);
 
   return (
-    <div className="w-full  m-0 p-0 ">
+    <div className="w-full   m-0 p-0 ">
       <div className="w-full h-1/2">
         <img src={BackgroundImg} className="object-contain w-full h-full"></img>
       </div>
@@ -60,45 +67,82 @@ function Home() {
         </div>
       </div>
 
-      <div className="w-full h-full  justify-items-center  grid grid-cols-1 md:grid-cols-1  gap-6  p-6  mt-5">
-        {products?.map((item, index) => (
-          <div
-            key={index}
-            className=" bg-gray-100  w-1/2 h-full   rounded-lg shadow hover:shadow-lg transition duration-300 overflow-hidden cursor-pointer"
-          >
-            <div className="w-full h-full ">
-              <div className="w-full h-[37.5rem] object-contain overflow-hidden  ">
-                <div className="w-full h-20 bg-white p-4 flex flex-row gap-3">
-                  <img src={ProfilePic} className="w-10 h-10 "></img>
-                  <p className="mt-3 text-black">{username}</p>
-                </div>
-                <img
-                  src={`${import.meta.env.VITE_BASE_URL}${item.image}`}
-                  alt={item.name}
-                  className="w-full h-[30.5rem] items-center object-contain p-2"
-                />
-              </div>
-              <div className="w-full h-24 bg-white text-black p-2 px-3 flex flex-row justify-between ">
-                <div className="w-full">
-                  <h2 className="text-sm font-semibold">{item.name}</h2>
-                  <h3 className="text-sm font-medium">{item.category}</h3>
-                  <div className="flex flex-row gap-5 mb-12 ">
-                    <Heart className="text-red-400 " />
-                    <MessageCircle />
-                    <Share2 />
+      <div className="w-full h-full justify-items-center grid grid-cols-1 md:grid-cols-1 gap-6 p-6 mt-5">
+        {products && products.length > 0 ? (
+          products.map((item, index) => {
+            const isLiked = toogle[item._id] || false;
+            console.log("IS LIKE --------- ", isLiked);
+
+            return (
+              <div
+                key={index}
+                className="bg-gray-100 md:w-1/2 w-full h-full rounded-lg shadow hover:shadow-lg transition duration-300 overflow-hidden cursor-pointer"
+              >
+                <div className="w-full h-full">
+                  <div className="w-full h-[37.5rem] object-contain overflow-hidden">
+                    <div className="w-full h-20 bg-white p-4 flex flex-row gap-3">
+                      <img src={ProfilePic} className="w-10 h-10" />
+                      <p
+                        className="mt-3 text-black"
+                        onClick={() => navigate(`/profile/${username}`)}
+                      >
+                        {username}
+                      </p>
+                    </div>
+                    <img
+                      src={`${import.meta.env.VITE_BASE_URL}${item.image}`}
+                      alt={item.name}
+                      className="w-full h-[30.5rem] items-center object-contain p-2"
+                    />
+                  </div>
+
+                  <div className="w-full h-40 bg-white text-black p-2 px-3 flex flex-row justify-between">
+                    <div className="w-full h-full">
+                      <h2 className="text-sm font-semibold">{item.name}</h2>
+                      <h3 className="text-sm font-medium">{item.category}</h3>
+
+                      <div className="flex flex-row gap-5 mb-4">
+                        {isLiked ? (
+                          <img
+                            src={HeartIcons}
+                            className="w-7 h-7 cursor-pointer"
+                            onClick={() =>
+                              setToogle({ ...toogle, [item._id]: false })
+                            }
+                          />
+                        ) : (
+                          <Heart
+                            className="w-7 h-7 text-black cursor-pointer"
+                            onClick={() =>
+                              setToogle({ ...toogle, [item._id]: true })
+                            }
+                          />
+                        )}
+
+                        <MessageCircle />
+                        <Share2 />
+                      </div>
+
+                      <div className="w-ful h-5">
+                        <p className="text-black">Like {isLiked ? 1 : 0}</p>
+                      </div>
+                    </div>
+
+                    <div>
+                      <span className="text-black-600 font-bold">
+                        {`$:${item.newPrice}`}
+                      </span>
+                    </div>
                   </div>
                 </div>
-
-                <div className="">
-                  <span className="text-black-600 font-bold">
-                    {`$:${item.newPrice}`}
-                  </span>
-                </div>
               </div>
-            </div>
-          </div>
-        ))}
-        <div>
+            );
+          })
+        ) : (
+          <h2 className="text-3xl text-red-400">NO DATA FOUND</h2>
+        )}
+
+        <div className="text-center">
           <PaginationPage
             page={page}
             totalPages={totalPages}

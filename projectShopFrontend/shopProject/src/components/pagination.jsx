@@ -5,7 +5,7 @@ const PaginationPage = ({ page, totalPages, setPage }) => {
   return (
     <>
       <Pagination
-        className="w-full  text-xl gap-10 mb-6 py-5 "
+        className="ant-pagination w-full  text-xl gap-10 mb-6 py-5 "
         current={page}
         total={totalPages * 10}
         pageSize={10}

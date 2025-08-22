@@ -107,4 +107,26 @@ productRouter.get("/", async (req, res) => {
   }
 });
 
+productRouter.post("/:id/like", async (req, res) => {
+  try {
+    const { userId } = req.body;
+    const product = await Product.findById(req.params.id);
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    if (product.likes.includes(userId)) {
+      return res.status(400).json({ message: "Already liked" });
+    }
+
+    product.likes.push(userId);
+    await product.save();
+
+    res.json({ message: "Product liked", likes: product.likes.length });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = productRouter;

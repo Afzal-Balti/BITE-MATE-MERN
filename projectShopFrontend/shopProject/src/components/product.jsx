@@ -115,13 +115,14 @@ function Product() {
             className="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-pink-400 outline-none"
           >
             <option value="">Select category</option>
-            <option value="Men">Men</option>
-            <option value="Women">Women</option>
-            <option value="Boys">Boys</option>
-            <option value="Girls">Girls</option>
-            <option value="Children">Children</option>
-            <option value="Accessories">Accessories</option>
-            <option value="Assests">Assests</option>
+            <option value="Fruit and vegetables">Fruit and vegetables</option>
+            <option value="Excessive Sugar">Excessive Sugar</option>
+            <option value="Vegetarian Dishes">Vegetarian Dishes</option>
+            <option value="Protein">Protein</option>
+            <option value="Fat">Fat</option>
+            <option value="Salads">Salads</option>
+            <option value="Soups">Soups</option>
+            <option value="Soups">Other</option>
           </select>
           {errors.category && (
             <p className="text-red-500 text-sm mt-1">

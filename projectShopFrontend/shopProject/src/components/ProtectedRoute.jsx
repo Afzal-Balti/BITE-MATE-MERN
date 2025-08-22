@@ -7,7 +7,9 @@ function ProtectedRoute() {
   useEffect(() => {
     const authProtect = async () => {
       const response = await axios
-        .get("http://localhost:3000/api/protected", { withCredentials: true })
+        .get(`${import.meta.env.VITE_BASE_URL}/api/protected`, {
+          withCredentials: true,
+        })
         .then((res) => console.log(res.data))
         .catch((err) => console.log(err.response?.data));
 

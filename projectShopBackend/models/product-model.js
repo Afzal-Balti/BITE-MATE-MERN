@@ -11,13 +11,14 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: true,
       enum: [
-        "Men",
-        "Women",
-        "Boys",
-        "Girls",
-        "Children",
-        "Accessories",
-        "Assests",
+        "Fruit and vegetables",
+        "Excessive Sugar",
+        "Vegetarian Dishes",
+        "Protein",
+        "Fat",
+        "Salads",
+        "Soups",
+        "Other",
       ],
     },
     oldPrice: {
@@ -50,6 +51,7 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   },
 
   { timestamps: true }

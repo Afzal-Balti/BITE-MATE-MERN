@@ -2,29 +2,30 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { useParams } from "react-router-dom";
+import PaginationPage from "./pagination";
 // import { loadStripe } from "@stripe/stripe-js";
 
 function AddCart() {
   const { id } = useParams();
-  console.log("THE ID IS CARTS --", id);
+  console.log("ROUTES URL ID IS ----------", id);
   const [carts, setCarts] = useState(null);
-
-  console.log("CARTS DATA ------ ", carts);
+  console.log("THE CARTS DATA DEAILED ------ ", carts);
 
   useEffect(() => {
     const addCartsProduct = async () => {
       const response = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}/products/`
+        `${import.meta.env.VITE_BASE_URL}/products/${id}`
       );
-      setCarts(response.data);
+      setCarts(response.data.product);
+
       console.log(response);
     };
 
     addCartsProduct();
-  }, []);
+  }, [id]);
 
-  const selectProductId = carts?.products?.find((item) => item._id === id);
-  console.log("Same the id ", selectProductId);
+  const selectProductId = carts;
+  console.log("THE PRODUCT ID IS ====== ", selectProductId);
 
   const handleClick = async (selectProductId) => {
     console.log("Hello ", selectProductId);
@@ -47,7 +48,7 @@ function AddCart() {
   };
 
   return (
-    <div className="w-full flex md:flex-row flex-col gap-20 p-8 bg-slate-50 ">
+    <div className="w-full flex md:flex-row flex-col md:gap-20 gap-5 md:p-8 p-4 bg-slate-50 ">
       <div className="md:w-1/2 w-full h-full py-20 text-center ">
         <div className="w-full h-full">
           {selectProductId ? (
@@ -65,7 +66,9 @@ function AddCart() {
                   </span>
                 )}
                 <img
-                  src={`http://localhost:3000${selectProductId.image}`}
+                  src={`${import.meta.env.VITE_BASE_URL}${
+                    selectProductId.image
+                  }`}
                   alt={selectProductId.name}
                   className="w-full h-72 object-contain p-2 mt-10"
                 />
@@ -103,7 +106,7 @@ function AddCart() {
                     <p className="text-xs text-gray-400 mt-2">No color</p>
                   )}
 
-                  <div className="w-full overflow-hidden text-sm text-gray-600">
+                  <div className="md:w-full w-full md:h-full h-20 overflow-hidden text-sm text-gray-600">
                     {selectProductId.description}
                   </div>
 
@@ -123,8 +126,8 @@ function AddCart() {
         </div>
       </div>
 
-      <div className="md:w-1/3 w-full h-full py-20 text-center ">
-        <div className="w-full rounded-2xl p-6  text-center">
+      <div className="md:w-1/3 w-full h-full md:py-20 py-0 text-center ">
+        <div className="w-full rounded-2xl md:p-6  p-0 text-center">
           {selectProductId ? (
             <div
               key={selectProductId._id}
@@ -138,7 +141,7 @@ function AddCart() {
                   <h3 className="text-3xl font-bold ">
                     {selectProductId.name}
                   </h3>
-                  <p className="w-2/3 text-center text-gray-400 py-6">
+                  <p className="md:w-2/3 w-full text-center text-gray-400 py-6">
                     {selectProductId.description}
                   </p>
                   <p className="text-2xl text-gray-500 py-6">

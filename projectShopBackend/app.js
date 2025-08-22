@@ -19,7 +19,7 @@ connectDB().catch((err) => console.error("Database connection error:", err));
 
 app.use(
   cors({
-    origin: "http://localhost:5174",
+    origin: "http://localhost:5173",
     credentials: true,
   })
 );
@@ -41,6 +41,7 @@ app.use("/login", loginUser);
 app.use("/products", productRouter);
 app.use("/logout", logoutUser);
 app.use("/payment", stripeRouter);
+
 
 app.get("/", (req, res) => {
   res.send("HELLO SERVER ---");

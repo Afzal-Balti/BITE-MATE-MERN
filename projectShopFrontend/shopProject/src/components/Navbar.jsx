@@ -7,7 +7,7 @@ function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   const { username } = useContext(UserData);
-  console.log("THE NAME IS =-----------", name);
+  console.log("THE NAME IS =-----------", username);
 
   return (
     <nav className=" w-full bg-gradient-to-r from-pink-500 fixed via-purple-500 to-blue-500 shadow-lg">
