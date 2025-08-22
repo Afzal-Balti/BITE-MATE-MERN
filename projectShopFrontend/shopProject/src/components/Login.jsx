@@ -21,16 +21,19 @@ function Login() {
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post("http://localhost:3000/login", {
-        email: data.email,
-        password: data.password,
-      });
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/login`,
+        {
+          email: data.email,
+          password: data.password,
+        }
+      );
 
       messageshow.success("User login successfully ✅");
       console.log("The login data is --- ", response.data);
 
       setTimeout(() => {
-        navigate("/shop");
+        navigate("/home");
       }, 1000);
 
       reset();

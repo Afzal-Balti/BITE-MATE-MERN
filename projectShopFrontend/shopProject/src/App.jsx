@@ -10,6 +10,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./components/Home";
 import Shopping from "./components/Shopping";
 import { ContextProvider } from "./components/UserContext";
+import AddCarts from "./components/AddCarts";
 
 function App() {
   return (
@@ -23,8 +24,9 @@ function App() {
           {/* Protected routes inside layout */}
           <Route element={<LayOut />}>
             <Route element={<ProtectedRoute />}>
-              <Route path="/shop/:id" element={<Shop />} />
-              <Route path="/shop" element={<Shopping />} />
+              <Route path="/shop" element={<Shop />} />
+              <Route path="/allproducts" element={<Shopping />} />
+              <Route path="/allcarts/:id" element={<AddCarts />} />
               <Route path="/home" element={<Home />} />
               <Route path="/product" element={<Product />} />
               <Route path="/logout" element={<Logout />} />

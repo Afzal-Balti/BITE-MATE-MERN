@@ -2,8 +2,6 @@ const express = require("express");
 const multer = require("multer");
 const fs = require("fs");
 const Product = require("../models/product-model");
-const isLoggedIn = require("../Middleware/isLoggedIn");
-const jwt = require("jsonwebtoken");
 
 const productRouter = express.Router();
 
@@ -28,8 +26,16 @@ productRouter.post("/", upload.single("image"), async (req, res) => {
       return res.status(400).json({ message: "Image is required" });
     }
 
-    const { name, category, oldPrice, newPrice, colors, sale, ratings } =
-      req.body;
+    const {
+      name,
+      category,
+      oldPrice,
+      newPrice,
+      colors,
+      sale,
+      ratings,
+      description,
+    } = req.body;
 
     const parsedColors = typeof colors === "string" ? JSON.parse(colors) : [];
 
@@ -42,9 +48,11 @@ productRouter.post("/", upload.single("image"), async (req, res) => {
       image: `/upload/${req.file.filename}`,
       sale: sale === "true" || sale === "on",
       ratings: parseFloat(ratings) || 0,
+      description,
     };
 
     const product = new Product(productData);
+    console.log("THE PRODUCT CREATED DATA IS ----- ", product);
     const savedProduct = await product.save();
 
     res.status(201).json({
@@ -78,8 +86,22 @@ productRouter.get("/:id", async (req, res) => {
 
 productRouter.get("/", async (req, res) => {
   try {
-    const products = await Product.find();
-    res.json(products);
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    const skip = (page - 1) * limit;
+    const products = await Product.find()
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+    const totalProducts = await Product.countDocuments();
+
+    res.json({
+      totalProducts,
+      totalPages: Math.ceil(totalProducts / limit),
+      currentPage: page,
+      products,
+    });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

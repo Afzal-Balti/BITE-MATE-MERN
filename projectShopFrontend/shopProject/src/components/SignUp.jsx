@@ -28,7 +28,7 @@ function SignUp() {
   const onSubmit = async (data) => {
     try {
       const response = await axios.post(
-        "http://localhost:3000/create",
+        `${import.meta.env.VITE_BASE_URL}/create`,
         {
           fullname: data.fullname,
           email: data.email,

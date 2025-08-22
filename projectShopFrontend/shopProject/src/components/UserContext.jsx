@@ -1,4 +1,3 @@
-// UserContext.js
 import React, { createContext, useEffect, useState } from "react";
 
 // eslint-disable-next-line react-refresh/only-export-components

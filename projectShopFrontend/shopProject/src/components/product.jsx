@@ -3,6 +3,7 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import DummyPic from "../assets/Images/export.png";
 
 function Product() {
   const {
@@ -18,7 +19,6 @@ function Product() {
   const navigate = useNavigate();
 
   const [messageApi, contextHolder] = message.useMessage();
-
   const [colors, setColors] = useState([]);
   const [imagePreview, setImagePreview] = useState(null);
 
@@ -43,10 +43,10 @@ function Product() {
   };
 
   const onSubmit = async (data) => {
-    console.log("data id is -------------- ", data._id);
     try {
       const formData = new FormData();
       formData.append("name", data.name);
+
       formData.append("category", data.category);
       formData.append("oldPrice", data.oldPrice);
       formData.append("newPrice", data.newPrice);
@@ -54,9 +54,10 @@ function Product() {
       if (data.image && data.image[0]) formData.append("image", data.image[0]);
       formData.append("sale", data.sale || false);
       formData.append("ratings", data.ratings || 0);
+      formData.append("description", data.description);
 
       const response = await axios.post(
-        "http://localhost:3000/products/",
+        `${import.meta.env.VITE_BASE_URL}/products`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -66,7 +67,7 @@ function Product() {
       console.log("Product Created:", response.data);
       messageApi.success("Product created successfully ✅");
       setTimeout(() => {
-        navigate(`/shop/${response.data.product._id}`);
+        navigate("/home");
       }, 1000);
       reset();
       setColors([]);
@@ -120,6 +121,7 @@ function Product() {
             <option value="Girls">Girls</option>
             <option value="Children">Children</option>
             <option value="Accessories">Accessories</option>
+            <option value="Assests">Assests</option>
           </select>
           {errors.category && (
             <p className="text-red-500 text-sm mt-1">
@@ -195,24 +197,42 @@ function Product() {
         </div>
 
         <div>
-          <label className="block font-semibold mb-1">Product Image</label>
+          <label className=" font-semibold mb-1">Product Image</label>
+          {imagePreview ? (
+            <img src={imagePreview} alt="Preview" />
+          ) : (
+            <img
+              className="cursor-pointer text-center text-gray-400  rounded-md w-80 h-80 "
+              src={DummyPic}
+            ></img>
+          )}
           <input
             type="file"
             {...register("image", { required: "Image is required" })}
-            accept="image/*"
             className="w-full border rounded px-3 py-2"
           />
           {errors.image && (
             <p className="text-red-500 text-sm mt-1">{errors.image.message}</p>
           )}
-          {imagePreview && (
-            <img
-              src={imagePreview}
-              alt="Preview"
-              className="mt-4 w-32 h-32 object-cover rounded border"
-            />
-          )}
         </div>
+
+        <textarea
+          type="text"
+          {...register("description", {
+            required: "description is required",
+            minLength: {
+              value: 2,
+              message: "Must be at least 30 characters",
+            },
+          })}
+          placeholder="Write a description about product "
+          className="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-pink-400 outline-none"
+        />
+        {errors.description && (
+          <p className="text-red-500 text-sm mt-1">
+            {errors.description.message}
+          </p>
+        )}
 
         <div className="flex items-center gap-2">
           <input type="checkbox" {...register("sale")} />

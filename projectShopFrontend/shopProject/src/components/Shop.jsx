@@ -1,31 +1,48 @@
 import React, { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
-
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import PaginationPage from "./pagination";
 
 function Shop() {
-  const { id } = useParams();
   const [product, setProduct] = useState(null);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const limit = 10;
+
+  console.log("PRODUCT OF SHOP IS ------ ", product);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get(`http://localhost:3000/products`);
-      setProduct(response.data);
+      const response = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/products?page=${page}&limit=${limit}`
+      );
+      setProduct(response.data.products);
+      setTotalPages(response.data.totalPages);
     };
+
     fetchData();
-  }, [id]);
+  }, [page]);
+
+  const handleClick = (id) => {
+    console.log("THE PRODUCT ID IS ---", id);
+
+    navigate(`/allcarts/${id}`);
+  };
 
   return (
-    <div className="w-full px-4 py-10 ">
+    <div className="w-full px-4 py-10  ">
       <h1 className="text-3xl font-bold text-center mb-8 text-pink-600 mt-10">
         Our Shop
       </h1>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 ">
-        {product?.map((item, index) => (
+        {product?.map((item) => (
           <div
-            key={index}
+            key={item._id}
+            onClick={() => handleClick(item._id)}
             className="bg-white rounded-lg shadow hover:shadow-lg transition duration-300 overflow-hidden cursor-pointer"
           >
             <div className="w-full ">
@@ -69,6 +86,9 @@ function Shop() {
               ) : (
                 <p className="text-xs text-gray-400 mt-2">No color</p>
               )}
+              <div className="w-full overflow-hidden text-sm text-gray-600">
+                {item.description}
+              </div>
 
               <div className="flex text-yellow-400 mt-3 text-xs">
                 {[...Array(4)].map((_, i) => (
@@ -78,6 +98,14 @@ function Shop() {
             </div>
           </div>
         ))}
+      </div>
+      <div className="w-full justify-content: center mt-20 ">
+        <PaginationPage
+          page={page}
+          totalPages={totalPages}
+          setPage={setPage}
+          className="text-center"
+        />
       </div>
     </div>
   );

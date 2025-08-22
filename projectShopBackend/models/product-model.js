@@ -10,7 +10,15 @@ const productSchema = new mongoose.Schema(
     category: {
       type: String,
       required: true,
-      enum: ["Men", "Women", "Boys", "Girls", "Children", "Accessories"],
+      enum: [
+        "Men",
+        "Women",
+        "Boys",
+        "Girls",
+        "Children",
+        "Accessories",
+        "Assests",
+      ],
     },
     oldPrice: {
       type: Number,
@@ -37,6 +45,10 @@ const productSchema = new mongoose.Schema(
       default: 0,
       min: 0,
       max: 5,
+    },
+    description: {
+      type: String,
+      required: true,
     },
   },
 
