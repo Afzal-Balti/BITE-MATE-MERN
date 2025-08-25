@@ -29,13 +29,9 @@ function Navbar() {
             <a href="/product" className="hover:text-yellow-300 transition">
               Products
             </a>
-            {/* <a
-              href="#"
-              className="  text-white-500 hover:text-black  transition flex items-center gap-2"
-            >
-              <FaUser className="hover:text-yellow-300" />
-              {` Hi ${username} 👋 ` || "Guest"}
-            </a> */}
+            <a href="/contact" className="hover:text-yellow-300 transition">
+              Contact Us
+            </a>
 
             <DropDown username={username} />
           </div>

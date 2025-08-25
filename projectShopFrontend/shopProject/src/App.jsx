@@ -12,6 +12,7 @@ import Shopping from "./components/Shopping";
 import { ContextProvider } from "./components/UserContext";
 import AddCarts from "./components/AddCarts";
 import Profile from "./components/Profile";
+import Contact from "./components/Contact";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
               <Route path="/home" element={<Home />} />
               <Route path="/profile/:username" element={<Profile />} />
               <Route path="/product" element={<Product />} />
+              <Route path="/contact" element={<Contact />} />
               <Route path="/logout" element={<Logout />} />
             </Route>
           </Route>

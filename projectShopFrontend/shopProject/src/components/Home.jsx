@@ -10,24 +10,18 @@ import ProfilePic from "../assets/Images/profile.png";
 import { UserData } from "./UserContext";
 import PaginationPage from "./pagination";
 import HeartIcons from "../assets/Images/heartIcon.png";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function Home() {
   const [products, setProducts] = useState(null);
+  const [like, setLike] = useState(null);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const limit = 10;
   const [toogle, setToogle] = useState({});
-
   const navigate = useNavigate();
-
-  console.log("TOOGLE IS --------- ", toogle);
-
   const { username } = useContext(UserData);
-
-  console.log("name is :::::", username);
-
-  // console.log("PAGE IS -----------", page);
+  const { id } = useParams();
   useEffect(() => {
     const listedProduct = async () => {
       try {
@@ -47,29 +41,69 @@ function Home() {
     listedProduct();
   }, [page]);
 
-  // console.log("the product data is shows -- ", products);
+  const handleLike = async (productId) => {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/products/${productId}/like`,
+        {
+          username,
+        }
+      );
+
+      console.log("THE LIKE SHOW ---------", response.data);
+      setLike(response.data);
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+  const handleDislike = async (productId) => {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/products/${productId}/dislike`
+      );
+      setToogle((prev) => ({ ...prev, [id]: false }));
+
+      console.log("THE LIKE SHOW ---------", response.data);
+      setLike(response.data);
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
+  // console.log("ITEM IS ----- ", item);
+
+  console.log("the like data is shows -- ", like);
+
+  console.log("the like product is shows -- ", products);
 
   return (
     <div className="w-full   m-0 p-0 ">
       <div className="w-full h-1/2">
         <img src={BackgroundImg} className="object-contain w-full h-full"></img>
       </div>
-      <div className="w-full relative overflow-hidden bg-gray-500 mt-5">
+      <div className="w-full  bg-slate-300 overflow-hidden  mt-5">
         <div className="flex animate-marquee whitespace-nowrap  text-2xl font-bold">
-          <h1 className="py-10 px-10 text-yellow-400">OUR SHOP PRODUCTS</h1>
-          <h1 className="py-10 px-10 text-white">SALE & PURCHASE</h1>
-          <h1 className="py-10 px-10 text-yellow-400">LET'S GO </h1>
-          <h1 className="py-10 px-10 text-white">ENJOY YOUR LIFE</h1>
-          <h1 className="py-10 px-10 text-yellow-400">KEEP SIMILE</h1>
-          <h1 className="py-10 px-10 text-white"></h1>
-          <h1 className="py-10 px-10 text-yellow-400">OUR TRUST IS CUSTOMER</h1>
-          <h1 className="py-10 px-10 text-white">WELCOME TO OUR BRAND</h1>
+          <h1 className="py-2 px-10 text-yellow-400">
+            WELCOME TO BITE-MATE-FOOD-STORE
+          </h1>
+          <h1 className="py-7 px-10 text-black">SALE & PURCHASE</h1>
+          <h1 className="py-4 px-10 text-yellow-400">LET'S GO </h1>
+          <h1 className="py-6 px-10 text-black">TESTY AND YUMMMY </h1>
+          <h1 className="py-3 px-10 text-yellow-400">KEEP SIMILE</h1>
+          <h1 className="py-6 px-10 text-black">ALL INGREDIENTS AVAIBALE</h1>
+          <h1 className="py-4 px-10 text-yellow-400">OUR TRUST IS CUSTOMER</h1>
+          <h1 className="py-6 px-10 text-black">WELCOME TO OUR BRAND</h1>
+          <h1 className="py-4 px-10 text-yellow-500">
+            MUST TRY THE BITEMATE WEBSITE
+          </h1>
         </div>
       </div>
 
       <div className="w-full h-full justify-items-center grid grid-cols-1 md:grid-cols-1 gap-6 p-6 mt-5">
         {products && products.length > 0 ? (
           products.map((item, index) => {
+            const productId = item._id;
+            console.log("PRODUCT ID IS ----- ", productId);
             const isLiked = toogle[item._id] || false;
             console.log("IS LIKE --------- ", isLiked);
 
@@ -106,16 +140,18 @@ function Home() {
                           <img
                             src={HeartIcons}
                             className="w-7 h-7 cursor-pointer"
-                            onClick={() =>
-                              setToogle({ ...toogle, [item._id]: false })
-                            }
+                            onClick={() => {
+                              setToogle({ ...toogle, [item._id]: false });
+                              handleDislike(item._id);
+                            }}
                           />
                         ) : (
                           <Heart
                             className="w-7 h-7 text-black cursor-pointer"
-                            onClick={() =>
-                              setToogle({ ...toogle, [item._id]: true })
-                            }
+                            onClick={() => {
+                              setToogle({ ...toogle, [item._id]: true });
+                              handleLike(item._id);
+                            }}
                           />
                         )}
 

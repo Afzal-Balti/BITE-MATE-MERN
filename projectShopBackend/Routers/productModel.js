@@ -1,132 +1,20 @@
 const express = require("express");
-const multer = require("multer");
-const fs = require("fs");
 const Product = require("../models/product-model");
-
+const productCreateItems = require("../controller/product-create-controller");
+const productItemById = require("../controller/productItemId-controller");
+const productShowPagination = require("../controller/allProduct-controller");
+const likeProduct = require("../controller/likeProducts");
+const dislike = require("../controller/disLikeProduct-controller");
 const productRouter = express.Router();
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    const uploadPath = "./upload";
-    if (!fs.existsSync(uploadPath)) {
-      fs.mkdirSync(uploadPath, { recursive: true });
-    }
-    cb(null, uploadPath);
-  },
-  filename: function (req, file, cb) {
-    cb(null, `${Date.now()}-${file.originalname}`);
-  },
-});
+productRouter.post("/", productCreateItems);
 
-const upload = multer({ storage });
+productRouter.get("/:id", productItemById);
 
-productRouter.post("/", upload.single("image"), async (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({ message: "Image is required" });
-    }
+productRouter.get("/", productShowPagination);
 
-    const {
-      name,
-      category,
-      oldPrice,
-      newPrice,
-      colors,
-      sale,
-      ratings,
-      description,
-    } = req.body;
+productRouter.post("/:id/like", likeProduct);
 
-    const parsedColors = typeof colors === "string" ? JSON.parse(colors) : [];
-
-    const productData = {
-      name,
-      category,
-      oldPrice: parseFloat(oldPrice) || 0,
-      newPrice: parseFloat(newPrice) || 0,
-      colors: parsedColors,
-      image: `/upload/${req.file.filename}`,
-      sale: sale === "true" || sale === "on",
-      ratings: parseFloat(ratings) || 0,
-      description,
-    };
-
-    const product = new Product(productData);
-    console.log("THE PRODUCT CREATED DATA IS ----- ", product);
-    const savedProduct = await product.save();
-
-    res.status(201).json({
-      product: savedProduct,
-      message: "Product is successfully created",
-      status: 200,
-    });
-  } catch (err) {
-    console.error("Error:", err);
-    res.status(400).json({ message: err.message });
-  }
-});
-
-productRouter.get("/:id", async (req, res) => {
-  try {
-    const product = await Product.findById(req.params.id);
-    console.log("Product found +++++", product.id);
-
-    if (!product) {
-      return res.status(404).json({ message: "Product not found" });
-    }
-
-    res.json({
-      product,
-    });
-  } catch (err) {
-    console.error("Error fetching product:", err.message);
-    res.status(500).json({ message: err.message });
-  }
-});
-
-productRouter.get("/", async (req, res) => {
-  try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
-
-    const skip = (page - 1) * limit;
-    const products = await Product.find()
-      .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(limit);
-    const totalProducts = await Product.countDocuments();
-
-    res.json({
-      totalProducts,
-      totalPages: Math.ceil(totalProducts / limit),
-      currentPage: page,
-      products,
-    });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
-productRouter.post("/:id/like", async (req, res) => {
-  try {
-    const { userId } = req.body;
-    const product = await Product.findById(req.params.id);
-
-    if (!product) {
-      return res.status(404).json({ message: "Product not found" });
-    }
-
-    if (product.likes.includes(userId)) {
-      return res.status(400).json({ message: "Already liked" });
-    }
-
-    product.likes.push(userId);
-    await product.save();
-
-    res.json({ message: "Product liked", likes: product.likes.length });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+productRouter.post("/:id/dislike", dislike);
 
 module.exports = productRouter;

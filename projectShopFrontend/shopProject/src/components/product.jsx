@@ -19,11 +19,9 @@ function Product() {
   const navigate = useNavigate();
 
   const [messageApi, contextHolder] = message.useMessage();
-  const [colors, setColors] = useState([]);
   const [imagePreview, setImagePreview] = useState(null);
 
   const watchImage = watch("image");
-  const watchColor = watch("color");
 
   useEffect(() => {
     if (watchImage && watchImage[0]) {
@@ -31,16 +29,6 @@ function Product() {
       setImagePreview(URL.createObjectURL(file));
     }
   }, [watchImage]);
-
-  const handleAddColor = () => {
-    if (watchColor && !colors.includes(watchColor)) {
-      setColors((prev) => [...prev, watchColor]);
-    }
-  };
-
-  const handleRemoveColor = (color) => {
-    setColors((prev) => prev.filter((c) => c !== color));
-  };
 
   const onSubmit = async (data) => {
     try {
@@ -50,7 +38,6 @@ function Product() {
       formData.append("category", data.category);
       formData.append("oldPrice", data.oldPrice);
       formData.append("newPrice", data.newPrice);
-      formData.append("colors", JSON.stringify(colors));
       if (data.image && data.image[0]) formData.append("image", data.image[0]);
       formData.append("sale", data.sale || false);
       formData.append("ratings", data.ratings || 0);
@@ -64,13 +51,12 @@ function Product() {
         }
       );
 
-      console.log("Product Created:", response.data);
+      console.log("ProductData is  Created:+++++", response.data);
       messageApi.success("Product created successfully ✅");
       setTimeout(() => {
         navigate("/home");
       }, 1000);
       reset();
-      setColors([]);
       setImagePreview(null);
     } catch (err) {
       console.error("API Error:", err);
@@ -159,41 +145,6 @@ function Product() {
                 {errors.newPrice.message}
               </p>
             )}
-          </div>
-        </div>
-
-        <div>
-          <label className="block font-semibold mb-1">Colors</label>
-          <div className="flex gap-2">
-            <input
-              type="color"
-              {...register("color")}
-              className="w-12 h-10 border rounded"
-            />
-            <button
-              type="button"
-              onClick={handleAddColor}
-              className="bg-pink-500 text-white px-3 rounded hover:bg-pink-600"
-            >
-              Add Color
-            </button>
-          </div>
-          <div className="flex gap-2 mt-3 flex-wrap">
-            {colors.map((color, index) => (
-              <div
-                key={index}
-                className="w-8 h-8 rounded-full border relative"
-                style={{ backgroundColor: color }}
-              >
-                <button
-                  type="button"
-                  onClick={() => handleRemoveColor(color)}
-                  className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5"
-                >
-                  ×
-                </button>
-              </div>
-            ))}
           </div>
         </div>
 

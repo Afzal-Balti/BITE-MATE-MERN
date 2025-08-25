@@ -126,12 +126,12 @@ function AddCart() {
         </div>
       </div>
 
-      <div className="md:w-1/3 w-full h-full md:py-20 py-0 text-center ">
+      <div className="md:w-1/3 w-full  h-full md:py-20 py-5 text-center ">
         <div className="w-full rounded-2xl md:p-6  p-0 text-center">
           {selectProductId ? (
             <div
               key={selectProductId._id}
-              className="w-full h-full p-10 rounded-lg shadow hover:shadow-sm transition duration-300 overflow-hidden cursor-pointer"
+              className="w-full h-full p-10 rounded-lg shadow hover:shadow-lg transition duration-300 overflow-hidden cursor-pointer"
             >
               <h2 className="text-2xl text-orange-700 font-bold">
                 BUY THE PRODUCT

@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/mongooseDB");
@@ -10,9 +11,6 @@ const logOut = require("./Routers/logout");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const logoutUser = require("./Routers/logout");
-
-require("dotenv").config();
-
 const app = express();
 
 connectDB().catch((err) => console.error("Database connection error:", err));
@@ -41,11 +39,6 @@ app.use("/login", loginUser);
 app.use("/products", productRouter);
 app.use("/logout", logoutUser);
 app.use("/payment", stripeRouter);
-
-
-app.get("/", (req, res) => {
-  res.send("HELLO SERVER ---");
-});
 
 app.listen(process.env.PORT, () => {
   console.log("Server running on port 3000");
