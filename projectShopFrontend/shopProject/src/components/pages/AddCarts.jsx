@@ -2,44 +2,33 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { useParams } from "react-router-dom";
-import PaginationPage from "./pagination";
-// import { loadStripe } from "@stripe/stripe-js";
 
 function AddCart() {
   const { id } = useParams();
-  console.log("ROUTES URL ID IS ----------", id);
   const [carts, setCarts] = useState(null);
-  console.log("THE CARTS DATA DEAILED ------ ", carts);
+  const api = import.meta.env.VITE_BASE_URL;
 
   useEffect(() => {
     const addCartsProduct = async () => {
-      const response = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}/products/${id}`
-      );
+      const response = await axios.get(`${api}/products/${id}`);
       setCarts(response.data.product);
-
-      console.log(response);
     };
 
     addCartsProduct();
   }, [id]);
 
   const selectProductId = carts;
-  console.log("THE PRODUCT ID IS ====== ", selectProductId);
 
   const handleClick = async (selectProductId) => {
     console.log("Hello ", selectProductId);
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/payment`,
-        {
-          name: selectProductId.name,
-          email: selectProductId.email,
-          newPrice: selectProductId.newPrice,
-          category: selectProductId.category,
-          image: selectProductId.image,
-        }
-      );
+      const response = await axios.post(`${api}/products/payment`, {
+        name: selectProductId.name,
+        email: selectProductId.email,
+        newPrice: selectProductId.newPrice,
+        category: selectProductId.category,
+        image: selectProductId.image,
+      });
       window.location.href = response.data.url;
       console.log("THE ADD TO CART PRODUCT DATA ++++++", response.data);
     } catch (err) {
@@ -66,9 +55,7 @@ function AddCart() {
                   </span>
                 )}
                 <img
-                  src={`${import.meta.env.VITE_BASE_URL}${
-                    selectProductId.image
-                  }`}
+                  src={`${api}${selectProductId.image}`}
                   alt={selectProductId.name}
                   className="w-full h-72 object-contain p-2 mt-10"
                 />

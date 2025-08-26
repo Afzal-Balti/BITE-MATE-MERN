@@ -1,25 +1,24 @@
 import React, { useContext, useState } from "react";
 import { FaUser, FaBars, FaTimes } from "react-icons/fa";
-import { UserData } from "./UserContext";
+import { UserData } from "../utils/UserContext";
 import DropDown from "./DropDown";
+import Logo from "../../assets/Images/BiteMate.png";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-
   const { username } = useContext(UserData);
-  console.log("THE NAME IS =-----------", username);
-
+ 
   return (
-    <nav className=" w-full bg-gradient-to-r from-pink-500 fixed via-purple-500 to-blue-500 shadow-lg">
+    <nav className=" w-full  fixed  bg-white  shadow-lg">
       <div className="mx-5  px-4 sm:px-6  ">
         <div className="flex justify-between items-center h-16 ">
           <div className="text-white font-bold text-2xl tracking-wide cursor-pointer">
             <a href="/home" className=" transition">
-              My Shop
+              <img src={Logo} className="w-20 h-20 text-white"></img>
             </a>
           </div>
 
-          <div className="hidden md:flex space-x-6 text-white font-medium ">
+          <div className="hidden md:flex space-x-6 text-black font-bold  ">
             <a href="/home" className="hover:text-yellow-300 transition">
               Home
             </a>

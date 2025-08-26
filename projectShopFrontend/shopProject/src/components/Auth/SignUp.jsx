@@ -2,13 +2,13 @@ import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { message } from "antd";
-import frontImage from "../assets/Images/frontImg.jpg";
+import { Input, message } from "antd";
+import frontImage from "../../assets/Images/FoodImage2.jpg";
 import "antd/dist/reset.css";
-import Navbar from "./Navbar";
-import { UserData } from "./UserContext";
-// import { useContext } from "react";
-// import { AuthProvider } from "./UserContext";
+import Navbar from "../Header/Navbar";
+import { UserData } from "../utils/UserContext";
+import Button from "../common/ButtonComp";
+import InputsComp from "../common/InputsComp";
 
 function SignUp() {
   const {
@@ -65,7 +65,7 @@ function SignUp() {
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Full Name
               </label>
-              <input
+              <InputsComp
                 type="text"
                 {...register("fullname", {
                   required: "Full name is required",
@@ -76,7 +76,8 @@ function SignUp() {
                 })}
                 placeholder="Enter Your Name"
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
-              />
+              ></InputsComp>
+
               {errors.fullname && (
                 <p className="text-red-500 text-sm mt-1">
                   {errors.fullname.message}
@@ -88,7 +89,7 @@ function SignUp() {
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Email
               </label>
-              <input
+              <InputsComp
                 type="email"
                 {...register("email", {
                   required: "Email is required",
@@ -98,7 +99,6 @@ function SignUp() {
                   },
                 })}
                 placeholder="example@gmail.com"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
               />
               {errors.email && (
                 <p className="text-red-500 text-sm mt-1">
@@ -111,7 +111,7 @@ function SignUp() {
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Password
               </label>
-              <input
+              <InputsComp
                 type="password"
                 {...register("password", {
                   required: "Password is required",
@@ -125,7 +125,6 @@ function SignUp() {
                   },
                 })}
                 placeholder="••••••••"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
               />
               {errors.password && (
                 <p className="text-red-500 text-sm mt-1">
@@ -133,13 +132,7 @@ function SignUp() {
                 </p>
               )}
             </div>
-
-            <button
-              type="submit"
-              className="w-full bg-yellow-400 hover:bg-yellow-500 text-white py-2 rounded-lg font-semibold transition-all duration-200"
-            >
-              Submit
-            </button>
+            <Button type="submit">Submit</Button>
           </form>
 
           <div className="mt-6 flex justify-between text-sm text-gray-600">

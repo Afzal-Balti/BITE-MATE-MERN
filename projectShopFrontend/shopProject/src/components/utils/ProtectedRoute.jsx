@@ -4,10 +4,12 @@ import { useEffect } from "react";
 import axios from "axios";
 
 function ProtectedRoute() {
+  const api = import.meta.env.VITE_BASE_URL;
+
   useEffect(() => {
     const authProtect = async () => {
       const response = await axios
-        .get(`${import.meta.env.VITE_BASE_URL}/api/protected`, {
+        .get(`${api}/api/protected`, {
           withCredentials: true,
         })
         .then((res) => console.log(res.data))

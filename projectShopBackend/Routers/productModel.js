@@ -1,10 +1,15 @@
 const express = require("express");
 const Product = require("../models/product-model");
-const productCreateItems = require("../controller/product-create-controller");
-const productItemById = require("../controller/productItemId-controller");
-const productShowPagination = require("../controller/allProduct-controller");
-const likeProduct = require("../controller/likeProducts");
-const dislike = require("../controller/disLikeProduct-controller");
+require("dotenv").config();
+const {
+  productCreateItems,
+  productItemById,
+  productShowPagination,
+  likeProduct,
+  dislike,
+  striptPayment,
+} = require("../controller/product-controller");
+
 const productRouter = express.Router();
 
 productRouter.post("/", productCreateItems);
@@ -16,5 +21,7 @@ productRouter.get("/", productShowPagination);
 productRouter.post("/:id/like", likeProduct);
 
 productRouter.post("/:id/dislike", dislike);
+
+productRouter.post("/payment", striptPayment);
 
 module.exports = productRouter;

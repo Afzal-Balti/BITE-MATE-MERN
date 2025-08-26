@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import { useEffect } from "react";
 import { message } from "antd";
 import { useNavigate } from "react-router-dom";
-import { UserData } from "./UserContext";
+import { UserData } from "../utils/UserContext";
 
 const Logout = () => {
   const [messageApi, contextHolder] = message.useMessage();

@@ -8,10 +8,9 @@ import {
 
 function Footer() {
   return (
-    <footer className="bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-white">
+    <footer className="bg-gray-400 rounded-lg text-black">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Logo / About */}
           <div>
             <h2 className="text-2xl font-bold mb-4">MyShop</h2>
             <p className="text-sm">
@@ -20,7 +19,6 @@ function Footer() {
             </p>
           </div>
 
-          {/* Quick Links */}
           <div>
             <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
@@ -42,7 +40,6 @@ function Footer() {
             </ul>
           </div>
 
-          {/* Customer Service */}
           <div>
             <h3 className="text-lg font-semibold mb-4">Customer Service</h3>
             <ul className="space-y-2">
@@ -64,7 +61,6 @@ function Footer() {
             </ul>
           </div>
 
-          {/* Social Media */}
           <div>
             <h3 className="text-lg font-semibold mb-4">Follow Us</h3>
             <div className="flex space-x-4 text-xl">
@@ -84,9 +80,8 @@ function Footer() {
           </div>
         </div>
 
-        {/* Bottom */}
         <div className="mt-10 border-t border-white/20 pt-4 text-center text-sm">
-          © {new Date().getFullYear()} MyShop. All rights reserved.
+          © {new Date().getFullYear()} BITE-MATE. All rights reserved.
         </div>
       </div>
     </footer>

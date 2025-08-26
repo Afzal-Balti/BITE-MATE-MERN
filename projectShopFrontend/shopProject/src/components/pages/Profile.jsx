@@ -1,29 +1,25 @@
 import React, { useContext, useEffect, useState } from "react";
-import profilePic from "../assets/Images/profile.png";
-import { UserData } from "./UserContext";
+import profilePic from "../../assets/Images/profile.png";
+import { UserData } from "../utils/UserContext";
 import axios from "axios";
 
 function Profile() {
   const { username } = useContext(UserData);
   const [post, setPost] = useState(null);
 
-  console.log("THE POST DATA IS ", post);
+  const api = import.meta.env.VITE_BASE_URL;
 
   useEffect(() => {
     const profilePost = async () => {
       try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/products`
-        );
-
-        console.log("THE PRODUCT SHOW ---------", response.data);
+        const response = await axios.get(`${api}/products`);
         setPost(response.data.products);
       } catch (err) {
         console.log(err.message);
       }
     };
     profilePost();
-  }, []);
+  }, [api]);
 
   return (
     <div className="w-full min-h-screen bg-gray-50 flex flex-col items-center py-10">
@@ -66,9 +62,9 @@ function Profile() {
             </div>
 
             <div className="mt-4 text-sm leading-relaxed">
-              <p className="font-medium">@Shahid#008</p>
-              <p>Photography | Videography</p>
-              <p>Nature is the art of Allah 🌄</p>
+              <p className="font-medium">hassan@gmail.com</p>
+              <p>Food-Receips | Like Food</p>
+              <p>Best Wealth best Health 🌄</p>
             </div>
           </div>
         </div>
@@ -79,7 +75,7 @@ function Profile() {
           <div key={item._id} className="flex flex-col items-center">
             <div className="w-16 h-16 rounded-full object-cover bg-gray-200 border-2 border-gray-300 flex items-center justify-center overflow-hidden">
               <img
-                src={`${import.meta.env.VITE_BASE_URL}${item.image}`}
+                src={`${api}${item.image}`}
                 alt={item.name}
                 className="w-full object-cover "
               />
@@ -94,7 +90,7 @@ function Profile() {
             <div className="w-full">
               <div className="w-full bg-gray-100 h-full object-cover">
                 <img
-                  src={`${import.meta.env.VITE_BASE_URL}${item.image}`}
+                  src={`${api}${item.image}`}
                   alt={item.name}
                   className="w-full object-cover "
                 />

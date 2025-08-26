@@ -1,16 +1,20 @@
 import React, { useContext, useEffect, useState } from "react";
-import BackgroundImg from "../assets/Images/FoodImage2.jpg";
+import BackgroundImg01 from "../../assets/Images/FoodImage2.jpg";
+import BackgroundImg02 from "../../assets/Images/FoodImage1.jpg";
+import BackgroundImg03 from "../../assets/Images/FoodImage3.jpg";
+
 import axios from "axios";
 import { FaUser } from "react-icons/fa";
 import { FaRegComment } from "react-icons/fa6";
 import { Share2 } from "lucide-react";
 import { MessageCircle } from "lucide-react";
 import { Heart } from "lucide-react";
-import ProfilePic from "../assets/Images/profile.png";
-import { UserData } from "./UserContext";
+import ProfilePic from "../../assets/Images/profile.png";
+import { UserData } from "../utils/UserContext";
 import PaginationPage from "./pagination";
-import HeartIcons from "../assets/Images/heartIcon.png";
+import HeartIcons from "../../assets/Images/heartIcon.png";
 import { useNavigate, useParams } from "react-router-dom";
+import { Carousel } from "antd";
 
 function Home() {
   const [products, setProducts] = useState(null);
@@ -22,16 +26,14 @@ function Home() {
   const navigate = useNavigate();
   const { username } = useContext(UserData);
   const { id } = useParams();
+
+  const api = import.meta.env.VITE_BASE_URL;
   useEffect(() => {
     const listedProduct = async () => {
       try {
         const response = await axios.get(
-          `${
-            import.meta.env.VITE_BASE_URL
-          }/products?page=${page}&limit=${limit}`
+          `${api}/products?page=${page}&limit=${limit}`
         );
-
-        console.log("THE PRODUCT SHOW ---------", response.data);
         setProducts(response.data.products);
         setTotalPages(response.data.totalPages);
       } catch (err) {
@@ -39,18 +41,13 @@ function Home() {
       }
     };
     listedProduct();
-  }, [page]);
+  }, [api, page]);
 
   const handleLike = async (productId) => {
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/products/${productId}/like`,
-        {
-          username,
-        }
-      );
-
-      console.log("THE LIKE SHOW ---------", response.data);
+      const response = await axios.post(`${api}/products/${productId}/like`, {
+        username,
+      });
       setLike(response.data);
     } catch (err) {
       console.log(err.message);
@@ -58,28 +55,45 @@ function Home() {
   };
   const handleDislike = async (productId) => {
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/products/${productId}/dislike`
-      );
+      const response = await axios.post(`${api}/products/${productId}/dislike`);
       setToogle((prev) => ({ ...prev, [id]: false }));
-
-      console.log("THE LIKE SHOW ---------", response.data);
       setLike(response.data);
     } catch (err) {
       console.log(err.message);
     }
   };
 
-  // console.log("ITEM IS ----- ", item);
-
   console.log("the like data is shows -- ", like);
 
-  console.log("the like product is shows -- ", products);
-
   return (
-    <div className="w-full   m-0 p-0 ">
-      <div className="w-full h-1/2">
-        <img src={BackgroundImg} className="object-contain w-full h-full"></img>
+    <div className=" w-full  ">
+      <div className=" relative w-full h-1/2  ">
+        <Carousel autoplay className="">
+          <div>
+            <img
+              src={BackgroundImg01}
+              className="object-contain w-full h-full relative"
+            ></img>
+          </div>
+          <div>
+            <img
+              src={BackgroundImg02}
+              className="object-contain w-full h-full relative"
+            ></img>
+          </div>
+          <div>
+            <img
+              src={BackgroundImg03}
+              className="object-contain w-full h-full"
+            ></img>
+          </div>
+          <div>
+            <img
+              src={BackgroundImg02}
+              className="object-contain w-full h-full"
+            ></img>
+          </div>
+        </Carousel>
       </div>
       <div className="w-full  bg-slate-300 overflow-hidden  mt-5">
         <div className="flex animate-marquee whitespace-nowrap  text-2xl font-bold">
@@ -98,14 +112,12 @@ function Home() {
           </h1>
         </div>
       </div>
-
-      <div className="w-full h-full justify-items-center grid grid-cols-1 md:grid-cols-1 gap-6 p-6 mt-5">
+      <div className="w-full h-full  justify-items-center grid grid-cols-1 md:grid-cols-1 gap-6 p-6 mt-5">
         {products && products.length > 0 ? (
           products.map((item, index) => {
             const productId = item._id;
             console.log("PRODUCT ID IS ----- ", productId);
             const isLiked = toogle[item._id] || false;
-            console.log("IS LIKE --------- ", isLiked);
 
             return (
               <div
@@ -124,7 +136,7 @@ function Home() {
                       </p>
                     </div>
                     <img
-                      src={`${import.meta.env.VITE_BASE_URL}${item.image}`}
+                      src={`${api}${item.image}`}
                       alt={item.name}
                       className="w-full h-[30.5rem] items-center object-contain p-2"
                     />
@@ -166,7 +178,7 @@ function Home() {
 
                     <div>
                       <span className="text-black-600 font-bold">
-                        {`$:${item.newPrice}`}
+                        {`RS:${item.newPrice}`}
                       </span>
                     </div>
                   </div>

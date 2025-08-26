@@ -4,7 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { message } from "antd";
 import "antd/dist/reset.css";
-import fontImage from "../assets/Images/frontImg.jpg";
+import fontImage from "../../assets/Images/FoodImage3.jpg";
+import Button from "../common/ButtonComp";
+import InputsComp from "../common/InputsComp";
 
 function Login() {
   const {
@@ -59,7 +61,7 @@ function Login() {
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Email
               </label>
-              <input
+              <InputsComp
                 type="email"
                 {...register("email", {
                   required: "Email is required",
@@ -69,7 +71,6 @@ function Login() {
                   },
                 })}
                 placeholder="example@gmail.com"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
               />
               {errors.email && (
                 <p className="text-red-500 text-sm mt-1">
@@ -82,7 +83,7 @@ function Login() {
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Password
               </label>
-              <input
+              <InputsComp
                 type="password"
                 {...register("password", {
                   required: "Password is required",
@@ -96,7 +97,6 @@ function Login() {
                   },
                 })}
                 placeholder="••••••••"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400"
               />
               {errors.password && (
                 <p className="text-red-500 text-sm mt-1">
@@ -105,12 +105,9 @@ function Login() {
               )}
             </div>
 
-            <button
-              type="submit"
-              className="w-full bg-yellow-400 hover:bg-yellow-500 text-white py-2 rounded-lg font-semibold transition-all duration-200"
-            >
+            <Button type="submit" variant="primary">
               Sign In
-            </button>
+            </Button>
           </form>
 
           <div className="mt-6 flex justify-between text-sm text-gray-600">

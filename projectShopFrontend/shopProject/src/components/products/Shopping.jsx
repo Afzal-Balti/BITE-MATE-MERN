@@ -8,13 +8,14 @@ function Shopping() {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
 
+  const api = import.meta.env.VITE_BASE_URL;
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get(`http://localhost:3000/products`);
+      const response = await axios.get(`${api}/products`);
       setProduct(response.data);
     };
     fetchData();
-  }, [id]);
+  }, [api, id]);
 
   return (
     <div className="w-full px-4 py-10 ">
@@ -35,7 +36,7 @@ function Shopping() {
                 </span>
               )}
               <img
-                src={`http://localhost:3000${item.image}`}
+                src={`${api}${item.image}`}
                 alt={item.name}
                 className="w-full h-48 object-contain p-2"
               />

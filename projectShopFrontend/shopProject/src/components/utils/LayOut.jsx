@@ -1,12 +1,10 @@
 import React, { useContext } from "react";
-import Navbar from "./Navbar";
+import Navbar from "../Header/Navbar";
 import { Outlet } from "react-router-dom";
-import Footer from "./Footer";
+import Footer from "../Header/Footer";
 import { UserData } from "./UserContext";
-// import { AuthContext } from "./UserContext";
 
 function LayOut() {
-  // const [username, setUsername] = useState();
   const { username } = useContext(UserData);
 
   return (

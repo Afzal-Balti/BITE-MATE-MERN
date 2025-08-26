@@ -1,14 +1,13 @@
 import React from "react";
 import { Phone, MessageCircle, Calendar } from "lucide-react";
-import phoneImg from "../assets/Images/phone.jpg";
+import phoneImg from "../../assets/Images/phone.jpg";
 import GoogleMapComponent from "./GoogleMap";
+import Button from "../common/ButtonComp";
 
 function Contact() {
   return (
     <div className="w-full bg-white py-12  px-6 md:px-20 lg:px-40">
-      {/* Top Section */}
       <div className="grid md:grid-cols-2 mt-14 gap-10 items-center">
-        {/* Left Section */}
         <div>
           <h2 className="text-3xl font-bold text-gray-800 mb-4">
             Contact Us About BiteMate FoodReceips
@@ -47,9 +46,7 @@ function Contact() {
             </div>
           </p>
 
-          {/* Contact Options */}
           <div className="grid md:grid-cols-3 gap-6">
-            {/* Call */}
             <div className="flex flex-col items-center text-center p-6 border rounded-2xl shadow hover:shadow-lg transition">
               <Phone className="w-8 h-8 text-blue-500 mb-3" />
               <h3 className="font-semibold text-gray-800">Call us directly</h3>
@@ -62,7 +59,6 @@ function Contact() {
               </a>
             </div>
 
-            {/* Chat */}
             <div className="flex flex-col items-center text-center p-6 border rounded-2xl shadow hover:shadow-lg transition">
               <MessageCircle className="w-8 h-8 text-blue-500 mb-3" />
               <h3 className="font-semibold text-gray-800">
@@ -73,7 +69,6 @@ function Contact() {
               </button>
             </div>
 
-            {/* Demo */}
             <div className="flex flex-col items-center text-center p-6 border rounded-2xl shadow hover:shadow-lg transition">
               <Calendar className="w-8 h-8 text-blue-500 mb-3" />
               <h3 className="font-semibold text-gray-800">
@@ -86,7 +81,6 @@ function Contact() {
           </div>
         </div>
 
-        {/* Right Section - Image */}
         <div className="flex justify-center">
           <img
             src={phoneImg}
@@ -114,12 +108,10 @@ function Contact() {
             required
           ></textarea>
 
-          <button
-            type="submit"
-            className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600 transition w-fit"
-          >
+
+          <Button type="submit" variant="primary" className="w-fit">
             Submit Message
-          </button>
+          </Button>
         </form>
       </div>
       <GoogleMapComponent />

@@ -1,29 +1,27 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import SignUp from "./components/SignUp";
-import Login from "./components/Login";
-import LayOut from "./components/LayOut";
-import Shop from "./components/Shop";
-import Product from "./components/product";
-import Logout from "./components/Logout";
-import ProtectedRoute from "./components/ProtectedRoute";
-import Home from "./components/Home";
-import Shopping from "./components/Shopping";
-import { ContextProvider } from "./components/UserContext";
-import AddCarts from "./components/AddCarts";
-import Profile from "./components/Profile";
-import Contact from "./components/Contact";
+import SignUp from "./components/Auth/SignUp";
+import Login from "./components/Auth/Login";
+import LayOut from "./components/utils/LayOut";
+import Shop from "./components/products/Shop";
+import Product from "./components/products/product";
+import Logout from "./components/Auth/Logout";
+import ProtectedRoute from "./components/utils/ProtectedRoute";
+import Home from "./components/pages/Home";
+import Shopping from "./components/products/Shopping";
+import { ContextProvider } from "./components/utils/UserContext";
+import AddCarts from "./components/pages/AddCarts";
+import Profile from "./components/pages/Profile";
+import Contact from "./components/Header/Contact";
 
 function App() {
   return (
     <ContextProvider>
       <BrowserRouter>
         <Routes>
-          {/* Public routes */}
           <Route path="/" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
 
-          {/* Protected routes inside layout */}
           <Route element={<LayOut />}>
             <Route element={<ProtectedRoute />}>
               <Route path="/shop" element={<Shop />} />

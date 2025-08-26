@@ -3,28 +3,24 @@ const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/mongooseDB");
 const expressonSession = require("express-session");
-const registerUser = require("./Routers/registerUser");
-const loginUser = require("./Routers/loginUser");
 const productRouter = require("./Routers/productModel");
-const stripeRouter = require("./Routers/stripePayment");
-const logOut = require("./Routers/logout");
 const cookieParser = require("cookie-parser");
-const jwt = require("jsonwebtoken");
-const logoutUser = require("./Routers/logout");
+const authRouter = require("./Routers/AuthRouter");
 const app = express();
 
 connectDB().catch((err) => console.error("Database connection error:", err));
 
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-    credentials: true,
-  })
-);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use("/upload", express.static("upload"));
 app.use(cookieParser());
+
+app.use(
+  cors({
+    origin: `${process.env.LOCAL_ORIGIN}`,
+    credentials: true,
+  })
+);
 
 app.use(
   expressonSession({
@@ -34,11 +30,8 @@ app.use(
   })
 );
 
-app.use("/create", registerUser);
-app.use("/login", loginUser);
 app.use("/products", productRouter);
-app.use("/logout", logoutUser);
-app.use("/payment", stripeRouter);
+app.use("/", authRouter);
 
 app.listen(process.env.PORT, () => {
   console.log("Server running on port 3000");

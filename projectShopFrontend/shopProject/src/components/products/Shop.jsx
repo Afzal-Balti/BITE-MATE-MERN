@@ -2,17 +2,17 @@ import React, { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import PaginationPage from "./pagination";
+import PaginationPage from "../pages/pagination";
 
 function Shop() {
   const [product, setProduct] = useState(null);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const limit = 10;
-
-  console.log("PRODUCT OF SHOP IS ------ ", product);
+  const limit = 15;
 
   const navigate = useNavigate();
+
+  const api = import.meta.env.VITE_BASE_URL;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,8 +27,6 @@ function Shop() {
   }, [page]);
 
   const handleClick = (id) => {
-    console.log("THE PRODUCT ID IS ---", id);
-
     navigate(`/allcarts/${id}`);
   };
 
@@ -53,7 +51,7 @@ function Shop() {
                   </span>
                 )}
                 <img
-                  src={`${import.meta.env.VITE_BASE_URL}${item.image}`}
+                  src={`${api}${item.image}`}
                   alt={item.name}
                   className="w-full h-48 object-contain p-2"
                 />

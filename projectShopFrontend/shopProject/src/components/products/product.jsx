@@ -3,7 +3,9 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import DummyPic from "../assets/Images/export.png";
+import DummyPic from "../../assets/Images/export.png";
+import InputsComp from "../common/InputsComp";
+import ButtonComp from "../common/ButtonComp";
 
 function Product() {
   const {
@@ -22,6 +24,8 @@ function Product() {
   const [imagePreview, setImagePreview] = useState(null);
 
   const watchImage = watch("image");
+
+  const api = import.meta.env.VITE_BASE_URL;
 
   useEffect(() => {
     if (watchImage && watchImage[0]) {
@@ -43,15 +47,11 @@ function Product() {
       formData.append("ratings", data.ratings || 0);
       formData.append("description", data.description);
 
-      const response = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/products`,
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
+      const response = await axios.post(`${api}/products`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
-      console.log("ProductData is  Created:+++++", response.data);
+      console.log("ProductData", response);
       messageApi.success("Product created successfully ✅");
       setTimeout(() => {
         navigate("/home");
@@ -65,7 +65,7 @@ function Product() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-10">
+    <div className="max-w-4xl mx-auto px-4 py-10">
       {contextHolder}
       <h1 className="text-3xl font-bold text-center mt-10 text-pink-600">
         Create Product
@@ -73,11 +73,11 @@ function Product() {
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white shadow-lg rounded-lg p-6 space-y-6"
+        className="bg-white w-full shadow-lg rounded-lg p-6 space-y-6"
       >
         <div>
           <label className="block font-semibold mb-1">Product Name</label>
-          <input
+          <InputsComp
             type="text"
             {...register("name", {
               required: "Product name is required",
@@ -87,7 +87,6 @@ function Product() {
               },
             })}
             placeholder="Enter product name"
-            className="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-pink-400 outline-none"
           />
           {errors.name && (
             <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
@@ -120,11 +119,10 @@ function Product() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block font-semibold mb-1">Old Price</label>
-            <input
+            <InputsComp
               type="number"
               {...register("oldPrice", { required: "Old price is required" })}
               placeholder="Enter old price"
-              className="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-pink-400 outline-none"
             />
             {errors.oldPrice && (
               <p className="text-red-500 text-sm mt-1">
@@ -134,11 +132,10 @@ function Product() {
           </div>
           <div>
             <label className="block font-semibold mb-1">New Price</label>
-            <input
+            <InputsComp
               type="number"
               {...register("newPrice", { required: "New price is required" })}
               placeholder="Enter new price"
-              className="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-pink-400 outline-none"
             />
             {errors.newPrice && (
               <p className="text-red-500 text-sm mt-1">
@@ -158,10 +155,9 @@ function Product() {
               src={DummyPic}
             ></img>
           )}
-          <input
+          <InputsComp
             type="file"
             {...register("image", { required: "Image is required" })}
-            className="w-full border rounded px-3 py-2"
           />
           {errors.image && (
             <p className="text-red-500 text-sm mt-1">{errors.image.message}</p>
@@ -187,16 +183,11 @@ function Product() {
         )}
 
         <div className="flex items-center gap-2">
-          <input type="checkbox" {...register("sale")} />
-          <label>On Sale</label>
+          <InputsComp type="checkbox" {...register("sale")} />
+          <label className="mb-4">On Sale</label>
         </div>
 
-        <button
-          type="submit"
-          className="w-full bg-gradient-to-r from-pink-500 to-purple-500 text-white py-2 rounded font-bold hover:opacity-90"
-        >
-          Create Product
-        </button>
+        <ButtonComp>Create Product</ButtonComp>
       </form>
     </div>
   );
