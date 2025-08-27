@@ -23,17 +23,17 @@ function Footer() {
             <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="hover:text-yellow-300">
+                <a href="/home" className="hover:text-yellow-300">
                   Home
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-yellow-300">
+                <a href="/shop" className="hover:text-yellow-300">
                   Shop
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-yellow-300">
+                <a href="/product" className="hover:text-yellow-300">
                   Products
                 </a>
               </li>
@@ -44,7 +44,7 @@ function Footer() {
             <h3 className="text-lg font-semibold mb-4">Customer Service</h3>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="hover:text-yellow-300">
+                <a href="/contact" className="hover:text-yellow-300">
                   Contact Us
                 </a>
               </li>

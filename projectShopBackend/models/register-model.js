@@ -11,15 +11,15 @@ const registerSchema = new mongo.Schema({
     required: true,
     unique: true,
     lowercase: true,
-    match: [
-      /^[a-zA-Z0-9._%+-]+@gmail\.com$/,
-      "Only Gmail addresses are allowed (example@gmail.com)",
-    ],
   },
   password: {
     type: String,
     required: true,
   },
+  isAdmin: {
+    type: Boolean,
+    default: false,
+  },
 });
 
-module.exports = mongo.model("register", registerSchema);
+module.exports = mongo.model("User", registerSchema);

@@ -1,13 +1,16 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import profilePic from "../../assets/Images/profile.png";
 import { UserData } from "../utils/UserContext";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 
 function Profile() {
-  const { username } = useContext(UserData);
+  const { username } = useParams();
   const [post, setPost] = useState(null);
 
   const api = import.meta.env.VITE_BASE_URL;
+
+  console.log("Fullname is--------- ", username);
 
   useEffect(() => {
     const profilePost = async () => {
@@ -20,6 +23,8 @@ function Profile() {
     };
     profilePost();
   }, [api]);
+
+  console.log("post is ===== ", post);
 
   return (
     <div className="w-full min-h-screen bg-gray-50 flex flex-col items-center py-10">
@@ -71,32 +76,44 @@ function Profile() {
       </div>
 
       <div className="no-scrollbar w-full max-w-3xl object-fill flex gap-6 mt-6 overflow-x-auto">
-        {post?.map((item) => (
-          <div key={item._id} className="flex flex-col items-center">
-            <div className="w-16 h-16 rounded-full object-cover bg-gray-200 border-2 border-gray-300 flex items-center justify-center overflow-hidden">
-              <img
-                src={`${api}${item.image}`}
-                alt={item.name}
-                className="w-full object-cover "
-              />
-            </div>
-          </div>
-        ))}
+        {post?.map((item) => {
+          if (item.createdBy.fullname == username) {
+            return (
+              <>
+                <div key={item._id} className="flex flex-col items-center">
+                  <div className="w-16 h-16 rounded-full object-cover bg-gray-200 border-2 border-gray-300 flex items-center justify-center overflow-hidden">
+                    <img
+                      src={`${api}${item.image}`}
+                      alt={item.name}
+                      className="w-full object-cover "
+                    />
+                  </div>
+                </div>
+              </>
+            );
+          } else {
+            <h2>NOT FOUND</h2>;
+          }
+        })}
       </div>
 
       <div className="w-full max-w-3xl grid grid-cols-3 gap-2 mt-6">
         {post?.map((item) => {
-          return (
-            <div className="w-full">
-              <div className="w-full bg-gray-100 h-full object-cover">
-                <img
-                  src={`${api}${item.image}`}
-                  alt={item.name}
-                  className="w-full object-cover "
-                />
+          if (item.createdBy.fullname == username) {
+            return (
+              <div className="w-full">
+                <div className="w-full bg-gray-100 h-full object-cover">
+                  <img
+                    src={`${api}${item.image}`}
+                    alt={item.name}
+                    className="w-full object-cover "
+                  />
+                </div>
               </div>
-            </div>
-          );
+            );
+          } else {
+            <h2>NOT FOUND</h2>;
+          }
         })}
       </div>
     </div>

@@ -99,3 +99,21 @@
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
+
+
+.ant-modal-content{
+  height: 600px !important;
+  width: 1000px !important;
+  justify-content: center;
+  background-color: white !important;
+}
+.ant-modal-content-box{
+  height: 300px !important;
+  width: 900px !important;
+  justify-content: center;
+  background-color: white !important;
+}
+
+.ant-btn{
+  display: none;
+}

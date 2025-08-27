@@ -33,6 +33,10 @@ app.use(
 app.use("/products", productRouter);
 app.use("/", authRouter);
 
+app.get("/", (req, res) => {
+  res.send("HELLO RESPONSE");
+});
+
 app.listen(process.env.PORT, () => {
   console.log("Server running on port 3000");
 });

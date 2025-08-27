@@ -7,9 +7,9 @@ import Logo from "../../assets/Images/BiteMate.png";
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { username } = useContext(UserData);
- 
+
   return (
-    <nav className=" w-full  fixed  bg-white  shadow-lg">
+    <nav className=" w-full  z-10 fixed  rounded-lg bg-white  shadow-lg">
       <div className="mx-5  px-4 sm:px-6  ">
         <div className="flex justify-between items-center h-16 ">
           <div className="text-white font-bold text-2xl tracking-wide cursor-pointer">

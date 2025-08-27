@@ -29,10 +29,7 @@ const productSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    colors: {
-      type: [String],
-      default: [],
-    },
+
     image: {
       type: String,
       required: true,
@@ -52,9 +49,10 @@ const productSchema = new mongoose.Schema(
       required: true,
     },
     likes: [{ type: String }],
+    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   },
 
   { timestamps: true }
 );
 
-module.exports = mongoose.model("allproducts", productSchema);
+module.exports = mongoose.model("Product", productSchema);

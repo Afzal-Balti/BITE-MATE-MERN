@@ -1,11 +1,12 @@
 import { message } from "antd";
-import axios from "axios";
+
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import DummyPic from "../../assets/Images/export.png";
 import InputsComp from "../common/InputsComp";
 import ButtonComp from "../common/ButtonComp";
+import { client } from "../../api-client";
 
 function Product() {
   const {
@@ -24,8 +25,6 @@ function Product() {
   const [imagePreview, setImagePreview] = useState(null);
 
   const watchImage = watch("image");
-
-  const api = import.meta.env.VITE_BASE_URL;
 
   useEffect(() => {
     if (watchImage && watchImage[0]) {
@@ -46,8 +45,9 @@ function Product() {
       formData.append("sale", data.sale || false);
       formData.append("ratings", data.ratings || 0);
       formData.append("description", data.description);
+      formData.append("createBy", data.createBy);
 
-      const response = await axios.post(`${api}/products`, formData, {
+      const response = await client.post(`/products`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 

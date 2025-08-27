@@ -7,7 +7,7 @@ const items = [
     key: "1",
     label: (
       <a target="_blank" href="/logout" className="primary px-5">
-        Log Out
+        LogOut
       </a>
     ),
   },

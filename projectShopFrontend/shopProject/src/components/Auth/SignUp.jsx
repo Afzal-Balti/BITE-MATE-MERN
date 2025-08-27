@@ -24,11 +24,12 @@ function SignUp() {
   const [messageApi, contextHolder] = message.useMessage();
 
   const { setUsername } = useContext(UserData);
+  const api = import.meta.env.VITE_BASE_URL;
 
   const onSubmit = async (data) => {
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/create`,
+        `${api}/create`,
         {
           fullname: data.fullname,
           email: data.email,
@@ -37,9 +38,10 @@ function SignUp() {
         { withCredentials: true }
       );
 
+      console.log("response of sigup---", response.data);
+
       messageApi.success("User created successfully ✅");
       setUsername(response.data.fullname);
-      console.log("The signUP user data is --- ", response.data.fullname);
 
       setTimeout(() => {
         navigate("/login");

@@ -15,6 +15,7 @@ const createUser = async (req, res) => {
     });
 
     const token = jwt.sign({ email }, process.env.JWT_KEY);
+    console.log("JWT TOKEN --", token);
 
     res.cookie("token", token, {
       httpOnly: false,
@@ -28,6 +29,7 @@ const createUser = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+createUser;
 
 const getLoginUser = async (req, res) => {
   try {
@@ -43,6 +45,7 @@ const getLoginUser = async (req, res) => {
 
     if (matchPassword) {
       const token = jwt.sign({ email: loginuser.email }, process.env.JWT_KEY);
+      console.log(token);
 
       res.cookie("token", token, {
         httpOnly: false,
@@ -65,10 +68,23 @@ const getLoginUser = async (req, res) => {
 const UserlogOut = (req, res) => {
   res.clearCookie("token", {
     httpOnly: false,
-    secure: true, // true if using HTTPS
-    sameSite: "None", // important for frontend usage
+    secure: true,
+    sameSite: "None",
   });
   res.status(200).json({ message: "Logged out successfully" });
 };
 
-module.exports = { createUser, getLoginUser, UserlogOut };
+const getAllUser = async (req, res, next) => {
+  try {
+    const users = await createRegister.find({}, { password: 0 });
+    if (!users || users.length === 0) {
+      res.send(404).json({ message: "USER IS NOT FOUND" });
+    }
+
+    return res.status(200).json(users);
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { createUser, getLoginUser, UserlogOut, getAllUser };

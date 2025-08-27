@@ -7,7 +7,6 @@ export const ContextProvider = ({ children }) => {
   const [username, setUsername] = useState(() => {
     return localStorage.getItem("username") || "";
   });
-
   useEffect(() => {
     if (username) {
       localStorage.setItem("username", username);

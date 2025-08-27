@@ -9,6 +9,7 @@ const Logout = () => {
   const [messageApi, contextHolder] = message.useMessage();
 
   const { setUsername } = useContext(UserData);
+  const api = import.meta.env.VITE_BASE_URL;
 
   const navigate = useNavigate();
 
@@ -16,7 +17,7 @@ const Logout = () => {
     const logoutApi = async () => {
       try {
         const data = await axios.post(
-          `${import.meta.env.VITE_BASE_URL}/logout`,
+          `${api}/logout`,
           {},
           { withCredentials: true }
         );

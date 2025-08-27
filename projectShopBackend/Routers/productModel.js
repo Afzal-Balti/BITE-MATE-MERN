@@ -13,10 +13,10 @@ const {
 const productRouter = express.Router();
 
 productRouter.post("/", productCreateItems);
+productRouter.get("/", productShowPagination);
 
 productRouter.get("/:id", productItemById);
 
-productRouter.get("/", productShowPagination);
 
 productRouter.post("/:id/like", likeProduct);
 

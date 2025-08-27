@@ -1,6 +1,8 @@
 const Product = require("../models/product-model");
+const mongoose = require("mongoose");
 const multer = require("multer");
 const fs = require("fs");
+const Authentication = require("../Middleware/Authentication");
 require("dotenv").config();
 const stripe = require("stripe")(process.env.SECERT_STRIPE_KEY);
 
@@ -13,7 +15,8 @@ const productShowPagination = async (req, res) => {
     const products = await Product.find()
       .sort({ createdAt: -1 })
       .skip(skip)
-      .limit(limit);
+      .limit(limit)
+      .populate("createdBy");
     const totalProducts = await Product.countDocuments();
 
     res.json({
@@ -43,6 +46,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 const productCreateItems = [
+  Authentication,
   upload.single("image"),
   async (req, res) => {
     try {
@@ -59,6 +63,7 @@ const productCreateItems = [
         sale,
         ratings,
         description,
+        createdBy,
       } = req.body;
 
       const parsedColors = typeof colors === "string" ? JSON.parse(colors) : [];
@@ -73,6 +78,7 @@ const productCreateItems = [
         sale: sale === "true" || sale === "on",
         ratings: parseFloat(ratings) || 0,
         description,
+        createdBy: req.user.id,
       };
 
       const product = new Product(productData);
@@ -93,7 +99,13 @@ const productCreateItems = [
 
 const productItemById = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid product ID" });
+    }
+
+    const product = await Product.findById(id);
     console.log("Product found +++++", product.id);
 
     if (!product) {
@@ -114,8 +126,9 @@ const likeProduct = async (req, res) => {
     const { id } = req.params;
     const { username } = req.body;
 
-    console.log("REQ.PARAMS.ID --->", id);
-    console.log("REQ.BODY.USERID --->", username);
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid product ID" });
+    }
 
     const product = await Product.findById(id);
     if (!product) return res.status(404).json({ message: "Product not found" });
@@ -127,7 +140,11 @@ const likeProduct = async (req, res) => {
     product.likes.push(username);
     await product.save();
 
-    res.json({ message: "Product liked", likes: product.likes.length });
+    res.json({
+      message: "Product liked",
+      likes: product.likes.length,
+      likeBy: product.likes,
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -135,12 +152,23 @@ const likeProduct = async (req, res) => {
 
 const dislike = async (req, res) => {
   try {
-    const product = await Product.findByIdAndUpdate(
-      req.params.id,
-      { $inc: { likes: "-1" } },
-      { new: true }
-    );
-    res.json(product);
+    const { id } = req.params;
+    const { username } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid product ID" });
+    }
+
+    const product = await Product.findById(id);
+    if (!product) return res.status(404).json({ message: "Product not found" });
+    product.likes = product.likes.filter((user) => user !== username);
+    await product.save();
+
+    res.json({
+      message: "Product disliked",
+      likes: product.likes.length,
+      likeBy: product.likes,
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

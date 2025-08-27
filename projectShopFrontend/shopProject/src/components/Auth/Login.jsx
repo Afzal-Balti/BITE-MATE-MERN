@@ -20,16 +20,14 @@ function Login() {
 
   const navigate = useNavigate();
   const [messageshow, setMessageShow] = message.useMessage();
+  const api = import.meta.env.VITE_BASE_URL;
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/login`,
-        {
-          email: data.email,
-          password: data.password,
-        }
-      );
+      const response = await axios.post(`${api}/login`, {
+        email: data.email,
+        password: data.password,
+      });
 
       messageshow.success("User login successfully ✅");
       console.log("The login data is --- ", response.data);

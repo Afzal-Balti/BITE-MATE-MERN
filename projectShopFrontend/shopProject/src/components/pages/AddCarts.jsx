@@ -15,12 +15,11 @@ function AddCart() {
     };
 
     addCartsProduct();
-  }, [id]);
+  }, [api, id]);
 
   const selectProductId = carts;
 
   const handleClick = async (selectProductId) => {
-    console.log("Hello ", selectProductId);
     try {
       const response = await axios.post(`${api}/products/payment`, {
         name: selectProductId.name,
@@ -30,7 +29,6 @@ function AddCart() {
         image: selectProductId.image,
       });
       window.location.href = response.data.url;
-      console.log("THE ADD TO CART PRODUCT DATA ++++++", response.data);
     } catch (err) {
       console.error("Payment error:", err);
     }
@@ -64,6 +62,7 @@ function AddCart() {
                   <h3 className="text-sm font-medium">
                     {selectProductId.name}
                   </h3>
+
                   <p className="text-xs text-gray-500">
                     {selectProductId.category}
                   </p>

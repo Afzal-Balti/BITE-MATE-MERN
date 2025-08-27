@@ -2,10 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import BackgroundImg01 from "../../assets/Images/FoodImage2.jpg";
 import BackgroundImg02 from "../../assets/Images/FoodImage1.jpg";
 import BackgroundImg03 from "../../assets/Images/FoodImage3.jpg";
-
-import axios from "axios";
-import { FaUser } from "react-icons/fa";
-import { FaRegComment } from "react-icons/fa6";
 import { Share2 } from "lucide-react";
 import { MessageCircle } from "lucide-react";
 import { Heart } from "lucide-react";
@@ -13,19 +9,19 @@ import ProfilePic from "../../assets/Images/profile.png";
 import { UserData } from "../utils/UserContext";
 import PaginationPage from "./pagination";
 import HeartIcons from "../../assets/Images/heartIcon.png";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Carousel } from "antd";
+import axios from "axios";
+import CommentModal from "./CommentModal";
+import ShareModal from "./ShareModal";
 
 function Home() {
-  const [products, setProducts] = useState(null);
-  const [like, setLike] = useState(null);
+  const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const limit = 10;
-  const [toogle, setToogle] = useState({});
   const navigate = useNavigate();
   const { username } = useContext(UserData);
-  const { id } = useParams();
 
   const api = import.meta.env.VITE_BASE_URL;
   useEffect(() => {
@@ -48,54 +44,59 @@ function Home() {
       const response = await axios.post(`${api}/products/${productId}/like`, {
         username,
       });
-      setLike(response.data);
+
+      setProducts((prev) =>
+        prev.map((item) =>
+          item._id === productId
+            ? { ...item, likes: response.data.likeBy }
+            : item
+        )
+      );
     } catch (err) {
       console.log(err.message);
     }
   };
+
   const handleDislike = async (productId) => {
     try {
-      const response = await axios.post(`${api}/products/${productId}/dislike`);
-      setToogle((prev) => ({ ...prev, [id]: false }));
-      setLike(response.data);
+      const response = await axios.post(
+        `${api}/products/${productId}/dislike`,
+        {
+          username,
+        }
+      );
+
+      setProducts((prev) =>
+        prev.map((item) =>
+          item._id === productId
+            ? { ...item, likes: response.data.likeBy }
+            : item
+        )
+      );
     } catch (err) {
       console.log(err.message);
     }
   };
 
-  console.log("the like data is shows -- ", like);
-
   return (
-    <div className=" w-full  ">
-      <div className=" relative w-full h-1/2  ">
-        <Carousel autoplay className="">
+    <div className=" w-full ">
+      <div className=" relative w-full   ">
+        <Carousel autoplay className="w-full ">
           <div>
-            <img
-              src={BackgroundImg01}
-              className="object-contain w-full h-full relative"
-            ></img>
+            <img src={BackgroundImg01} className=" w-full  "></img>
           </div>
           <div>
-            <img
-              src={BackgroundImg02}
-              className="object-contain w-full h-full relative"
-            ></img>
+            <img src={BackgroundImg02} className=" w-full relative"></img>
           </div>
           <div>
-            <img
-              src={BackgroundImg03}
-              className="object-contain w-full h-full"
-            ></img>
+            <img src={BackgroundImg03} className="w-full  "></img>
           </div>
           <div>
-            <img
-              src={BackgroundImg02}
-              className="object-contain w-full h-full"
-            ></img>
+            <img src={BackgroundImg02} className="w-full   "></img>
           </div>
         </Carousel>
       </div>
-      <div className="w-full  bg-slate-300 overflow-hidden  mt-5">
+      <div className="w-full  bg-slate-300 overflow-hidden mt-5  z-10 ">
         <div className="flex animate-marquee whitespace-nowrap  text-2xl font-bold">
           <h1 className="py-2 px-10 text-yellow-400">
             WELCOME TO BITE-MATE-FOOD-STORE
@@ -115,9 +116,9 @@ function Home() {
       <div className="w-full h-full  justify-items-center grid grid-cols-1 md:grid-cols-1 gap-6 p-6 mt-5">
         {products && products.length > 0 ? (
           products.map((item, index) => {
-            const productId = item._id;
-            console.log("PRODUCT ID IS ----- ", productId);
-            const isLiked = toogle[item._id] || false;
+            const isLiked = item.likes.includes(username);
+            const isFullName = item.createdBy.fullname;
+            console.log(isFullName);
 
             return (
               <div
@@ -130,9 +131,11 @@ function Home() {
                       <img src={ProfilePic} className="w-10 h-10" />
                       <p
                         className="mt-3 text-black"
-                        onClick={() => navigate(`/profile/${username}`)}
+                        onClick={() =>
+                          navigate(`/profile/${item.createdBy.fullname}`)
+                        }
                       >
-                        {username}
+                        {item.createdBy.fullname}
                       </p>
                     </div>
                     <img
@@ -152,27 +155,26 @@ function Home() {
                           <img
                             src={HeartIcons}
                             className="w-7 h-7 cursor-pointer"
-                            onClick={() => {
-                              setToogle({ ...toogle, [item._id]: false });
-                              handleDislike(item._id);
-                            }}
+                            onClick={() => handleDislike(item._id)}
                           />
                         ) : (
                           <Heart
                             className="w-7 h-7 text-black cursor-pointer"
-                            onClick={() => {
-                              setToogle({ ...toogle, [item._id]: true });
-                              handleLike(item._id);
-                            }}
+                            onClick={() => handleLike(item._id)}
                           />
                         )}
 
-                        <MessageCircle />
-                        <Share2 />
+                        <CommentModal />
+
+                        {/* <MessageCircle  onClick={()=> } /> */}
+
+                        <ShareModal />
                       </div>
 
                       <div className="w-ful h-5">
-                        <p className="text-black">Like {isLiked ? 1 : 0}</p>
+                        <p className="text-black">
+                          Like {`${item.likes.length}`}
+                        </p>
                       </div>
                     </div>
 
