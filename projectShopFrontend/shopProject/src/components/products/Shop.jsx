@@ -62,7 +62,7 @@ function Shop() {
 
               <div className="p-3">
                 <h3 className="text-sm font-medium">{item.name}</h3>
-                 <h3 className="text-sm font-medium">{item.name}</h3>
+
                 <h3 className="text-sm font-medium">
                   {`P-Owner:${item.createdBy.fullname}`}
                 </h3>
